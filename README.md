@@ -2,150 +2,127 @@
 
 ## Overview
 
-This repository contains the core implementation for an AI-driven DevOps orchestration engine that integrates deployment reasoning, security validation, monitoring configuration, incident response, and telemetry capture.
+This repository contains a consolidated, runnable starter implementation of an AI-driven DevOps orchestration engine.
 
-The current implementation includes:
-- `agents/orchestrator/main_orchestrator.py`: orchestrates the end-to-end pipeline.
-- `agents/reasoning_agents/deployment_agent.py`: an intelligent deployment reasoning agent.
-- `foundry_integration/eventhouse/devops_telemetry.kql`: telemetry schema and failed deployment query.
+The system is intended to demonstrate an end-to-end orchestration flow that includes:
+- security validation
+- deployment readiness reasoning
+- monitoring/observability setup
+- incident creation
+- telemetry ingestion and analysis
+
+## What’s included
+
+- `agents/orchestrator/main_orchestrator.py` — central orchestration pipeline
+- `agents/reasoning_agents/` — reasoning agent implementations
+  - `deployment_agent.py`
+  - `security_agent.py`
+  - `monitoring_agent.py`
+  - `incident_agent.py`
+- `agents/integrations/fabric_iq_client.py` — Fabric IQ event ingestion stub
+- `foundry_iq/` — local stub package for reasoning abstractions
+- `fabric_iq/` — local stub package for telemetry client behavior
+- `run_orchestrator.py` — runnable startup script
+- `foundry_integration/eventhouse/` — KQL telemetry schema files
+- project support docs and helper files:
+  - `.env.example`
+  - `config.py`
+  - `logger.py`
+  - `setup.py`
+  - `test_orchestrator.py`
+  - `API_REFERENCE.md`
+  - `INSTALLATION.md`
+  - `QUICKSTART.md`
+  - `PROJECT_INDEX.md`
+  - `DELIVERY_SUMMARY.md`
+  - `IMPLEMENTATION_STATUS.md`
+  - `IMPLEMENTATION_COMPLETE.md`
+  - `START_HERE.txt`
 
 ## Architecture
 
-The orchestrator is designed around a multi-agent pipeline:
+The orchestrator uses a multi-agent pipeline:
 1. Security validation via `SecurityComplianceAgent`
 2. Deployment readiness evaluation via `IntelligentDeploymentAgent`
 3. Observability/monitoring setup via `MonitoringIntelligenceAgent`
-4. Execution with safety nets and post-deployment validation
-5. Telemetry ingestion into Fabric IQ
+4. Deployment execution with safety checks
+5. Post-deployment validation and telemetry ingestion
 
 ### Key components
 
 - `DevOpsOrchestrator` in `agents/orchestrator/main_orchestrator.py`
   - `execute_pipeline()` is the main orchestration entrypoint.
-  - It runs security scans, deployment planning, monitoring configuration, and post-deploy validation.
+  - It runs security scans, deployment planning, monitoring configuration, and post-deployment logging.
 
 - `IntelligentDeploymentAgent` in `agents/reasoning_agents/deployment_agent.py`
-  - Uses Foundry IQ reasoning to assess deployment readiness.
-  - Logs telemetry to Fabric IQ.
+  - Uses local `foundry_iq` reasoning abstractions.
+  - Logs telemetry through Fabric IQ stubs.
 
-- `devops_telemetry.kql` in `foundry_integration/eventhouse`
+- `SecurityComplianceAgent`, `MonitoringIntelligenceAgent`, `IncidentResponseAgent`
+  - Provided as local async stubs for starter orchestration flows.
+
+- `foundry_integration/eventhouse/devops_telemetry.kql`
   - Defines the telemetry table schema.
-  - Includes a helper function to find failed deployments in the last 24 hours.
+  - Includes a helper function to query failed deployments.
+
+- `foundry_integration/eventhouse/devops_telemetry_extended.kql`
+  - Provides extended telemetry query definitions for richer event ingestion.
 
 ## Current Implementation Status
 
 Implemented:
-- Deployment agent reasoning and telemetry logging logic
-- Orchestrator pipeline skeleton with phase flow
-- KQL schema for telemetry ingestion
-- Runtime runner `run_orchestrator.py`
-- Local stub implementations for `SecurityComplianceAgent`, `MonitoringIntelligenceAgent`, and `IncidentResponseAgent`
-- Local stub implementations for `FabricIQClient`, `foundry_iq`, and `fabric_iq`
-- `requirements.txt` manifest
+- Fully merged single-folder repository structure
+- Runnable orchestration starter via `run_orchestrator.py`
+- Local stub implementations for core agents and integration clients
+- Local `foundry_iq` and `fabric_iq` packages for reasoning and telemetry simulation
+- KQL telemetry schema and extended telemetry definitions
+- Documentation and package helper files
+- Test runner scaffolding via `test_orchestrator.py`
 
-Pending / required implementation:
-- Production-grade `foundry_iq` and `fabric_iq` client libraries or adapters
-- Real Fabric IQ / Foundry IQ credentials and integrations
+Pending / future work:
+- Production-grade Fabric IQ and Foundry IQ client integration
+- Real telemetry backend connection and credentials support
+- Expanded agent logic beyond starter stub behavior
+- Formal unit and integration tests for real workflows
 
-## Implementation Plan
-
-### Phase 1: Complete missing agent modules
-
-Create the missing reasoning agent classes under `agents/reasoning_agents/`:
-- `security_agent.py` → `SecurityComplianceAgent`
-- `monitoring_agent.py` → `MonitoringIntelligenceAgent`
-- `incident_agent.py` → `IncidentResponseAgent`
-
-Each agent should expose async methods that match the orchestrator expectations:
-- `SecurityComplianceAgent.scan_pipeline(code_changes)`
-- `MonitoringIntelligenceAgent.configure_observability(target_resources)`
-- `IncidentResponseAgent.create_incident(severity, finding)`
-
-### Phase 2: Implement shared integration clients
-
-Implement or wire the following integration layers:
-- `FabricIQClient` for event ingestion and telemetry
-- `TelemetryClient` for agent-level logging
-- `ReasoningAgent` and `ChainOfThought` abstractions from `foundry_iq`
-
-### Phase 3: Define runtime and dependency management
-
-Add package metadata and installation instructions:
-- `requirements.txt` or `pyproject.toml`
-- A top-level entrypoint script such as `run_orchestrator.py`
-- environment configuration for Azure/Fabric/Foundry credentials
-
-### Phase 4: Add tests and validation
-
-Create tests for:
-- pipeline control flow in `DevOpsOrchestrator`
-- deployment readiness logic in `IntelligentDeploymentAgent`
-- telemetry event formatting and ingestion behavior
-- failure/rollback handling in the orchestrator
-
-### Phase 5: Deploy and verify
-
-- Provision Fabric IQ / Foundry IQ integration resources
-- Deploy or run the orchestrator from a controlled environment
-- Use the KQL query in `foundry_integration/eventhouse/devops_telemetry.kql` to validate telemetry
-
-## Execution Steps
+## Installation
 
 ### Prerequisites
 
 - Python 3.11+ installed
-- An async-capable runtime for the orchestrator
-- Local stub packages are included for `foundry_iq` and `fabric_iq`
+- Local clone of the repository
+- An async-capable runtime for Python scripts
 
-### Install dependencies
-
-Create a virtual environment and install required packages.
+### Setup
 
 ```bash
+cd c:\Workspaces\ibm\microsoft_hackthon\azure-sentinel-devops-orchestrator
 python -m venv .venv
-.venv/Scripts/activate
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> The starter version uses local stub packages for `foundry_iq` and `fabric_iq` that are included in the repository.
+> `requirements.txt` currently contains repository notes. The starter version uses local stub packages and does not require external `foundry_iq` / `fabric_iq` dependencies.
 
-### Run the orchestrator
+## Run the orchestrator
 
-Create a simple runner to invoke the pipeline. Example:
-
-```python
-import asyncio
-from agents.orchestrator.main_orchestrator import DevOpsOrchestrator
-
-class PipelineTrigger:
-    def __init__(self, code_changes, deployment_context):
-        self.code_changes = code_changes
-        self.deployment_context = deployment_context
-
-async def main():
-    orchestrator = DevOpsOrchestrator()
-
-    pipeline_trigger = PipelineTrigger(
-        code_changes={"files": ["app.py"], "summary": "Deploy update"},
-        deployment_context={"changes": ["service config"], "target_resources": ["resource-group"]}
-    )
-
-    result = await orchestrator.execute_pipeline(pipeline_trigger)
-    print(result)
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-Run the file:
+Execute the main orchestrator runner:
 
 ```bash
 python run_orchestrator.py
 ```
 
-### Validate telemetry
+The starter flow will produce a deployment result payload and simulate telemetry ingestion.
 
-Use the KQL definitions in `foundry_integration/eventhouse/devops_telemetry.kql` to create the telemetry table and query failures:
+### Example runner usage
+
+The repository already includes `run_orchestrator.py`; it invokes `DevOpsOrchestrator` with sample payloads.
+
+## Validate telemetry
+
+Use the KQL files in `foundry_integration/eventhouse/` to inspect telemetry schema and queries.
+
+Example:
 
 ```kql
 .create table DevOpsTelemetry (
@@ -167,20 +144,31 @@ Use the KQL definitions in `foundry_integration/eventhouse/devops_telemetry.kql`
 }
 ```
 
-## Project Structure
+## Project structure
 
-- `agents/orchestrator/main_orchestrator.py` - main orchestration pipeline
-- `agents/reasoning_agents/deployment_agent.py` - deployment reasoning agent
-- `foundry_integration/eventhouse/devops_telemetry.kql` - telemetry schema and query
+- `agents/orchestrator/main_orchestrator.py`
+- `agents/reasoning_agents/deployment_agent.py`
+- `agents/reasoning_agents/security_agent.py`
+- `agents/reasoning_agents/monitoring_agent.py`
+- `agents/reasoning_agents/incident_agent.py`
+- `agents/integrations/fabric_iq_client.py`
+- `foundry_iq/`
+- `fabric_iq/`
+- `foundry_integration/eventhouse/`
+- documentation files: `INSTALLATION.md`, `QUICKSTART.md`, `API_REFERENCE.md`, etc.
+- `run_orchestrator.py`
+- `test_orchestrator.py`
 
-## Next Steps
+## Next steps
 
-1. Add the missing reasoning agent modules.
-2. Implement the Fabric IQ and Foundry IQ client adapters.
-3. Add dependency manifests and environment setup documentation.
-4. Write unit/integration tests for orchestration and telemetry flows.
-5. Connect to a real Fabric IQ telemetry backend and validate queries.
+1. Replace local stubs with real Fabric IQ / Foundry IQ client implementations.
+2. Add configuration and credentials support in `config.py` and `.env.example`.
+3. Expand reasoning logic in each agent.
+4. Add formal tests around orchestrator flow and telemetry events.
+5. Connect the pipeline to a real telemetry backend and verify the KQL queries.
 
 ## Notes
 
-This README reflects the current repository state as of the existing source tree. The implementation is intentionally modular so that security, monitoring, and incident response agents can be added without changing core orchestration flow.
+- This repository now uses a single consolidated folder structure.
+- It is runnable as a starter project without external dependencies.
+- Production integration and real backends remain future enhancements.
