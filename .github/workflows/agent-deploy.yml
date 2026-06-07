@@ -1,0 +1,68 @@
+# .github/workflows/agent-deploy.yml
+name: Deploy DevOps Reasoning Agents
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-agents:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+          
+      - name: Run reasoning tests
+        run: |
+          pytest tests/reasoning/ -v --cov=agents
+          
+      - name: Validate Foundry IQ integration
+        env:
+          FOUNDRY_API_KEY: ${{ secrets.FOUNDRY_API_KEY }}
+        run: |
+          python scripts/validate_foundry_integration.py
+          
+      - name: Validate Fabric IQ integration
+        env:
+          FABRIC_CONNECTION_STRING: ${{ secrets.FABRIC_CONNECTION_STRING }}
+        run: |
+          python scripts/validate_fabric_integration.py
+
+  deploy-to-azure:
+    needs: validate-agents
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Deploy Bicep infrastructure
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: devops-agents-rg
+          template: infrastructure/bicep/agent_resources.bicep
+          
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp up \
+            --name devops-orchestrator \
+            --resource-group devops-agents-rg \
+            --environment agents-environment \
+            --source . \
+            --ingress external \
+            --target-port 8000

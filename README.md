@@ -38,15 +38,14 @@ Implemented:
 - Deployment agent reasoning and telemetry logging logic
 - Orchestrator pipeline skeleton with phase flow
 - KQL schema for telemetry ingestion
+- Runtime runner `run_orchestrator.py`
+- Local stub implementations for `SecurityComplianceAgent`, `MonitoringIntelligenceAgent`, and `IncidentResponseAgent`
+- Local stub implementations for `FabricIQClient`, `foundry_iq`, and `fabric_iq`
+- `requirements.txt` manifest
 
 Pending / required implementation:
-- `SecurityComplianceAgent`
-- `MonitoringIntelligenceAgent`
-- `IncidentResponseAgent`
-- `FabricIQClient` implementation
-- actual `foundry_iq` and `fabric_iq` client libraries or adapters
-- runtime initializer or CLI entrypoint
-- dependency manifest such as `requirements.txt`
+- Production-grade `foundry_iq` and `fabric_iq` client libraries or adapters
+- Real Fabric IQ / Foundry IQ credentials and integrations
 
 ## Implementation Plan
 
@@ -95,9 +94,8 @@ Create tests for:
 ### Prerequisites
 
 - Python 3.11+ installed
-- `foundry_iq` and `fabric_iq` Python packages available
-- Access credentials to the Fabric IQ and Foundry IQ systems
 - An async-capable runtime for the orchestrator
+- Local stub packages are included for `foundry_iq` and `fabric_iq`
 
 ### Install dependencies
 
@@ -109,11 +107,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-> If `requirements.txt` does not exist yet, install the expected dependencies manually:
-
-```bash
-pip install foundry_iq fabric_iq
-```
+> The starter version uses local stub packages for `foundry_iq` and `fabric_iq` that are included in the repository.
 
 ### Run the orchestrator
 

@@ -21,7 +21,11 @@ class IntelligentDeploymentAgent(ReasoningAgent):
         infra_state = await self.get_infrastructure_state()
         
         # Step 2: Review recent changes and dependencies
-        change_impact = await self.analyze_change_impact(deployment_context.changes)
+        change_input = deployment_context
+        if isinstance(deployment_context, dict):
+            change_input = deployment_context.get("changes")
+
+        change_impact = await self.analyze_change_impact(change_input)
         
         # Step 3: Generate reasoning chain
         reasoning = ChainOfThought([

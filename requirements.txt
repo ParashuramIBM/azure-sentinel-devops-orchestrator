@@ -1,0 +1,3 @@
+# Requirements for Azure Sentinel DevOps Orchestrator
+# This repository includes local stub packages for foundry_iq and fabric_iq.
+# No external dependencies are required to run the starter version.
