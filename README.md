@@ -92,6 +92,7 @@ Pending / future work:
 - Python 3.11+ installed
 - Local clone of the repository
 - An async-capable runtime for Python scripts
+- Azure environment settings are optional for local demo execution
 
 ### Setup
 
@@ -103,6 +104,7 @@ pip install -r requirements.txt
 ```
 
 > `requirements.txt` currently contains repository notes. The starter version uses local stub packages and does not require external `foundry_iq` / `fabric_iq` dependencies.
+> Azure configuration values in `.env` may be left empty for this local demo.
 
 ## Run the orchestrator
 
