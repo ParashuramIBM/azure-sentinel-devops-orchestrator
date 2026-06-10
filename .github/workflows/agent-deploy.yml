@@ -25,7 +25,7 @@ jobs:
           
       - name: Run reasoning tests
         run: |
-          pytest tests/reasoning/ -v --cov=agents
+          python -m pytest tests/reasoning/ -v --cov=agents
           
       - name: Validate Foundry IQ integration
         env:
