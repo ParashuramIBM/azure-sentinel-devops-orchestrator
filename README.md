@@ -1,4 +1,4 @@
-[Azure Sentinel DevOps Orchestrator - Technical Specification.docx](https://github.com/user-attachments/files/28875769/Azure.Sentinel.DevOps.Orchestrator.-.Technical.Specification.docx)# Azure Sentinel DevOps Orchestrator
+# Azure Sentinel DevOps Orchestrator
 
 ## 🚀 Enterprise-Grade AI-Driven DevOps Automation Platform
 
