@@ -81,12 +81,8 @@ python run_orchestrator.py
 
 ## 🏗️ Enterprise Architecture
 
-```
-![Azure Sentinel DevOps Orchestrator](images/sentinel_complete_architecture.png)
+<img width="813" height="1345" alt="image" src="https://github.com/user-attachments/assets/35f9267d-de81-497f-a390-9e28b9ef8b5e" />
 
-```
-
----
 
 ## 🎯 Key Features
 
