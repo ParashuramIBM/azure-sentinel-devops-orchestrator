@@ -1,3 +1,48 @@
-# Requirements for Azure Sentinel DevOps Orchestrator
-# This repository includes local stub packages for foundry_iq and fabric_iq.
-# No external dependencies are required to run the starter version.
+# Core Dependencies
+python-dotenv==1.0.0
+pydantic==2.5.0
+dataclasses-json==0.6.3
+
+# Azure SDK - Sentinel Integration
+azure-identity==1.15.0
+azure-mgmt-securityinsight==2.0.0
+azure-monitor-ingestion==1.0.3
+azure-mgmt-loganalytics==13.0.0
+azure-mgmt-resource==23.0.1
+
+# Azure Core
+azure-core==1.29.5
+azure-mgmt-core==1.4.0
+
+# Async Support
+aiohttp==3.9.1
+asyncio==3.4.3
+
+# Logging and Monitoring
+structlog==23.2.0
+python-json-logger==2.0.7
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Code Quality
+black==23.12.1
+flake8==6.1.0
+mypy==1.7.1
+pylint==3.0.3
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.5.3
+
+# Utilities
+requests==2.31.0
+urllib3==2.1.0
+certifi==2023.11.17
+
+# Development
+ipython==8.18.1
+jupyter==1.0.0
