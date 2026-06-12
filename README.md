@@ -1,4 +1,4 @@
-# Azure Sentinel DevOps Orchestrator
+[Azure Sentinel DevOps Orchestrator - Technical Specification.docx](https://github.com/user-attachments/files/28875769/Azure.Sentinel.DevOps.Orchestrator.-.Technical.Specification.docx)# Azure Sentinel DevOps Orchestrator
 
 ## 🚀 Enterprise-Grade AI-Driven DevOps Automation Platform
 
@@ -82,40 +82,8 @@ python run_orchestrator.py
 ## 🏗️ Enterprise Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    DevOps Orchestrator                           │
-│              (Main Coordination Layer + Sentinel)                │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   Security   │    │  Deployment  │    │  Monitoring  │
-│ Compliance   │───▶│   Reasoning  │───▶│ Intelligence │
-│    Agent     │    │    Agent     │    │    Agent     │
-└──────────────┘    └──────────────┘    └──────────────┘
-        │                     │                     │
-        └─────────────────────┼─────────────────────┘
-                              ▼
-                    ┌──────────────────┐
-                    │  Incident Agent  │
-                    │  (On Failures)   │
-                    └──────────────────┘
-                              │
-                ┌─────────────┴─────────────┐
-                ▼                           ▼
-    ┌──────────────────┐        ┌──────────────────┐
-    │  Azure Sentinel  │        │  Fabric IQ       │
-    │  Incidents       │        │  Telemetry       │
-    └──────────────────┘        └──────────────────┘
-                │                           │
-                └───────────┬───────────────┘
-                            ▼
-                ┌──────────────────────┐
-                │  Azure Log Analytics │
-                │  Workspace           │
-                └──────────────────────┘
+<img width="813" height="1345" alt="image" src="https://github.com/user-attachments/assets/77bb07e6-5f2d-40d3-8fa5-1b57b252a80b" />
+
 ```
 
 ---
@@ -492,7 +460,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For enterprise support, custom integrations, training, or consulting services:
 - 📧 Email: parashuram.ind@gmail.com
-- 💼 Documentation: [Azure Sentinel DevOps Guide](https://docs.microsoft.com/azure/sentinel/devops-integration)
+- 💼 Documentation: ([Azure Sentinel DevOps Orchestrator - Technical Specification.docx](https://github.com/user-attachments/files/28875774/Azure.Sentinel.DevOps.Orchestrator.-.Technical.Specification.docx)
+)
 - 📞 Phone: +91-9902123069
 
 ---
