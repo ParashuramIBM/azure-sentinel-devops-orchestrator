@@ -1,0 +1,12 @@
+
+{
+  "agent_name": "DeploymentReasoningAgent",
+  "model_type": "reasoning_chain",
+  "capabilities": [
+    "infrastructure_validation",
+    "deployment_strategy_optimization",
+    "rollback_decision_making"
+  ],
+  "knowledge_base": "devops_runbooks.json",
+  "api_endpoint": "https://foundry.microsoft.com/api/reasoning/v1"
+}

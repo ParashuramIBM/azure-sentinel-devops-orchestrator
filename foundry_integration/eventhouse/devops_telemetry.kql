@@ -1,0 +1,18 @@
+// fabric_integration/eventhouse/devops_telemetry.kql
+.create table DevOpsTelemetry (
+    Timestamp: datetime,
+    AgentName: string,
+    Action: string,
+    ResourceId: string,
+    Success: bool,
+    ResponseTimeMs: int,
+    ErrorCode: string,
+    ReasoningTrace: string
+)
+
+.create function GetFailedDeployments() {
+    DevOpsTelemetry
+    | where Success == false
+    | where Timestamp > ago(24h)
+    | project Timestamp, AgentName, ResourceId, ErrorCode, ReasoningTrace
+}

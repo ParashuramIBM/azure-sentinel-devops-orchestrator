@@ -1,0 +1,128 @@
+// Extended KQL queries for Azure Sentinel DevOps Telemetry
+// File: foundry_integration/eventhouse/devops_telemetry_extended.kql
+
+// Table 1: Main DevOps Telemetry Table
+.create-merge table DevOpsTelemetry (
+    Timestamp: datetime,
+    AgentName: string,
+    Action: string,
+    ResourceId: string,
+    Success: bool,
+    ResponseTimeMs: int,
+    ErrorCode: string,
+    ReasoningTrace: string
+)
+
+// Table 2: Deployment Metrics Table
+.create-merge table DeploymentMetrics (
+    Timestamp: datetime,
+    DeploymentId: string,
+    Status: string,
+    Duration: int,
+    SuccessRate: double,
+    ResourceCount: int,
+    ErrorCount: int,
+    AgentName: string
+)
+
+// Table 3: Security Events Table
+.create-merge table SecurityEvents (
+    Timestamp: datetime,
+    EventType: string,
+    Severity: string,
+    Finding: string,
+    AgentName: string,
+    Resolved: bool,
+    ResolutionTime: int
+)
+
+// Table 4: Agent Performance Table
+.create-merge table AgentPerformance (
+    Timestamp: datetime,
+    AgentName: string,
+    OperationCount: int,
+    AverageResponseTime: int,
+    SuccessRate: double,
+    ErrorRate: double
+)
+
+// Function 1: Get Failed Deployments in Last 24 Hours
+.create-or-alter function GetFailedDeployments() {
+    DevOpsTelemetry
+    | where Success == false
+    | where Timestamp > ago(24h)
+    | project Timestamp, AgentName, ResourceId, ErrorCode, ReasoningTrace
+}
+
+// Function 2: Get High Severity Security Events
+.create-or-alter function GetHighSeveritySecurityEvents() {
+    SecurityEvents
+    | where Severity in ("HIGH", "CRITICAL")
+    | where Timestamp > ago(7d)
+    | project Timestamp, EventType, Finding, AgentName, Resolved
+    | sort by Timestamp desc
+}
+
+// Function 3: Agent Performance Summary
+.create-or-alter function GetAgentPerformanceSummary() {
+    AgentPerformance
+    | where Timestamp > ago(24h)
+    | summarize 
+        AvgResponseTime = avg(AverageResponseTime),
+        AvgSuccessRate = avg(SuccessRate),
+        AvgErrorRate = avg(ErrorRate)
+        by AgentName
+}
+
+// Function 4: Deployment Trend Analysis
+.create-or-alter function GetDeploymentTrends() {
+    DeploymentMetrics
+    | where Timestamp > ago(30d)
+    | summarize 
+        TotalDeployments = count(),
+        SuccessfulDeployments = sum(Status == "success"),
+        FailedDeployments = sum(Status == "failed"),
+        AverageDuration = avg(Duration),
+        AverageResourceCount = avg(ResourceCount)
+        by bin(Timestamp, 1d), Status
+    | project Timestamp, Status, TotalDeployments, SuccessfulDeployments, FailedDeployments, AverageDuration, AverageResourceCount
+}
+
+// Query 1: Real-time Deployment Status
+DevOpsTelemetry
+| where Action == "deployment_complete"
+| where Timestamp > ago(1h)
+| summarize 
+    TotalActions = count(),
+    SuccessfulActions = sum(Success),
+    FailedActions = sum(not(Success)),
+    AvgResponseTime = avg(ResponseTimeMs)
+    by AgentName
+| project AgentName, TotalActions, SuccessfulActions, FailedActions, AvgResponseTime
+
+// Query 2: Error Analysis
+DevOpsTelemetry
+| where Success == false
+| where Timestamp > ago(24h)
+| summarize ErrorCount = count() by ErrorCode, AgentName
+| top 10 by ErrorCount
+
+// Query 3: Response Time Analysis
+DevOpsTelemetry
+| where Timestamp > ago(1d)
+| summarize 
+    AvgResponseTime = avg(ResponseTimeMs),
+    P95ResponseTime = percentile(ResponseTimeMs, 95),
+    P99ResponseTime = percentile(ResponseTimeMs, 99),
+    MaxResponseTime = max(ResponseTimeMs)
+    by AgentName
+
+// Query 4: Security Incident Trends
+SecurityEvents
+| where Timestamp > ago(7d)
+| summarize 
+    TotalIncidents = count(),
+    ResolvedIncidents = sum(Resolved),
+    UnresolvedIncidents = sum(not(Resolved)),
+    AvgResolutionTime = avg(ResolutionTime)
+    by bin(Timestamp, 1d), Severity
