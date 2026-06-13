@@ -479,7 +479,7 @@ For enterprise support, custom integrations, training, or consulting services:
 
 **© 2026 Azure Sentinel DevOps Orchestrator Team. All rights reserved.**
 
-*Built with ❤️ for Enterprise DevOps Automation*
+*Built with ❤️ for Microsoft Agents League Hackathon*
 
 **Version:** 1.0.0  
 **Last Updated:** 2026-06-12  
